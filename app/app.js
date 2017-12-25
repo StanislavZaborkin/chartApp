@@ -21,11 +21,14 @@ var myApp = angular.module('myApp', [
         }).then(function successCallback(response) {
             $scope.users.push(response.data);
 
-            for (var key in response.data){
+            /*for (var key in response.data){
                 if (key === 'exchangeRate'){
                     $scope.filterArr.push(key);
                 }
-            }
+            }*/
+            $scope.users.forEach(function(item, i, arr) {
+                console.log( i + ": " + item + " (массив:" + arr + ")" );
+            });
         }, function errorCallback(response) {
             console.log('error' + response.statusText);
         });

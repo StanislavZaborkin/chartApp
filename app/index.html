@@ -44,17 +44,6 @@
       <button class="button" ng-click="getFunc()">Click to get info</button>
     </div>
 
-    <ul ng-repeat="item in users">
-      <li ng-repeat="cur in item.exchangeRate">
-        <span>{{cur.baseCurrency + ' : '}}</span>
-        <span>{{cur.currency + ' : '}}</span>
-        <span>{{cur.saleRateNB + ' : '}}</span>
-        <span>{{cur.purchaseRateNB}}</span>
-      </li>
-    </ul>
-
-    <hr>
-
     <ul ng-repeat="item in filterArr">
       <li>
         {{item}}
@@ -64,11 +53,11 @@
     <hr>
 
     <ul ng-repeat="item in users">
-      <li ng-repeat="cur in item.exchangeRate" ng-if="cur.currency === 'EUR'">
+      <li ng-repeat="cur in item.exchangeRate" ng-if="cur.currency === 'EUR' || cur.currency === 'USD'
+      || cur.currency === 'CAD' || cur.currency === 'GBP' ">
         <span>{{cur.baseCurrency + ' : '}}</span>
         <span>{{cur.currency + ' : '}}</span>
-        <span>{{cur.saleRateNB + ' : '}}</span>
-        <span>{{cur.purchaseRateNB}}</span>
+        <span>{{cur.saleRateNB}}</span>
       </li>
     </ul>
 
