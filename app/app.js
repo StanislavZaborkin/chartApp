@@ -1,22 +1,50 @@
 'use strict';
 
-// Declare app level module which depends on views, and components
 var myApp = angular.module('myApp', [
-  'ngRoute',
-  'myApp.view1',
-  'myApp.view2',
-  'myApp.version',
     'chart.js'
-]).
-config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
-  $locationProvider.hashPrefix('!');
+])
 
-  $routeProvider.otherwise({redirectTo: '/view1'});
-}])
-.controller("myController", function ($scope) {
+.controller("myController",['$scope', '$http', function ($scope, $http) {
+
+    $scope.users = [];
+    $scope.filterArr = [];
+
+    $scope.getFunc = function () {
+
+        /*var yesterday = new Date();
+        yesterday = yesterday.getDate() - 1;
+        $scope.url = 'https://api.privatbank.ua/p24api/exchange_rates?json&date=' + yesterday;*/
+
+        $http({
+            method: 'GET',
+            url: 'https://api.privatbank.ua/p24api/exchange_rates?json&date=5.12.2017'
+        }).then(function successCallback(response) {
+            $scope.users.push(response.data);
+
+            for (var key in response.data){
+                if (key === 'exchangeRate'){
+                    $scope.filterArr.push(key);
+                }
+            }
+        }, function errorCallback(response) {
+            console.log('error' + response.statusText);
+        });
+    };
+
+    $scope.getTodayRate = function () {
+
+    };
+
+    $scope.getWeekRate = function () {
+
+    };
+
+    $scope.getMonthRate = function () {
+
+    };
 
     $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-    $scope.series = ['Series A', 'Series B'];
+    $scope.series = ['USD', 'UA'];
     $scope.data = [
         [65, 59, 80, 81, 56, 55, 40],
         [28, 48, 40, 19, 86, 27, 90]
@@ -43,4 +71,5 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
             ]
         }
     };
-});
+}]);
+
