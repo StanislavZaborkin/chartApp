@@ -18,19 +18,19 @@
   <div ng-controller="myController">
 
         <span>
-        <button class="button">USD</button>
+        <button class="button" ng-click="selectCur(1)">USD</button>
         </span><span>
-        <button class="button">EUR</button>
+        <button class="button" ng-click="selectCur(2)">EUR</button>
         </span><span>
         <button class="button">CAD</button>
         </span><span>
         <button class="button">GBP</button>
         </span>
 
-    <!--<canvas id="line" class="chart chart-line" chart-data="data"
+    <canvas id="line" class="chart chart-line" chart-data="data"
             chart-labels="labels" chart-series="series" chart-options="options"
             chart-dataset-override="datasetOverride" chart-click="onClick">
-    </canvas>-->
+    </canvas>
 
         <span>
         <button class="button" ng-click="getTodayRate()">Today</button>
@@ -39,18 +39,6 @@
         </span><span>
         <button class="button" ng-click="getMonthRate()">Last month</button>
         </span>
-
-    <div>
-      <button class="button" ng-click="getFunc()">Click to get info</button>
-    </div>
-
-    <ul ng-repeat="item in filterArr">
-      <li>
-        {{item}}
-      </li>
-    </ul>
-
-    <hr>
 
     <ul ng-repeat="item in users">
       <li ng-repeat="cur in item.exchangeRate" ng-if="cur.currency === 'EUR' || cur.currency === 'USD'
