@@ -66,6 +66,62 @@ var myApp = angular.module('myApp', [
         }
     };
 
+    $scope.selectWeekCur = function (i, j, x, y) {
+        if (j === undefined){
+            $scope.weekRateC.push($scope.newArr[0].saleRateNB);
+            $scope.series = [$scope.newArr[0].currency];
+            $scope.data = [
+                [$scope.weekRateC[0], $scope.weekRateC[1], $scope.weekRateC[2],
+                    $scope.weekRateC[3], $scope.weekRateC[4], $scope.weekRateC[5], $scope.weekRateC[6]]
+            ];
+        }
+        else if (x === undefined) {
+            $scope.weekRateC.push($scope.newArr[0].saleRateNB);
+            $scope.weekRateG.push($scope.newArr[1].saleRateNB);
+            $scope.series = [$scope.newArr[0].currency, $scope.newArr[1].currency];
+            $scope.data = [
+                [$scope.weekRateC[0], $scope.weekRateC[1], $scope.weekRateC[2],
+                    $scope.weekRateC[3], $scope.weekRateC[4], $scope.weekRateC[5], $scope.weekRateC[6]],
+                [$scope.weekRateG[0], $scope.weekRateG[1], $scope.weekRateG[2],
+                    $scope.weekRateG[3], $scope.weekRateG[4], $scope.weekRateG[5], $scope.weekRateG[6]]
+            ];
+        }
+        else if (y === undefined) {
+            $scope.weekRateC.push($scope.newArr[0].saleRateNB);
+            $scope.weekRateG.push($scope.newArr[1].saleRateNB);
+            $scope.weekRateU.push($scope.newArr[2].saleRateNB);
+            $scope.series = [$scope.newArr[0].currency, $scope.newArr[1].currency, $scope.newArr[2].currency];
+            $scope.data = [
+                [$scope.weekRateC[0], $scope.weekRateC[1], $scope.weekRateC[2],
+                    $scope.weekRateC[3], $scope.weekRateC[4], $scope.weekRateC[5], $scope.weekRateC[6]],
+                [$scope.weekRateG[0], $scope.weekRateG[1], $scope.weekRateG[2],
+                    $scope.weekRateG[3], $scope.weekRateG[4], $scope.weekRateG[5], $scope.weekRateG[6]],
+                [$scope.weekRateU[0], $scope.weekRateU[1], $scope.weekRateU[2],
+                    $scope.weekRateU[3], $scope.weekRateU[4], $scope.weekRateU[5], $scope.weekRateU[6]]
+            ];
+        }
+        else if (y) {
+            $scope.weekRateC.push($scope.newArr[0].saleRateNB);
+            $scope.weekRateG.push($scope.newArr[1].saleRateNB);
+            $scope.weekRateU.push($scope.newArr[2].saleRateNB);
+            $scope.weekRateE.push($scope.newArr[3].saleRateNB);
+
+            $scope.series = [$scope.newArr[0].currency, $scope.newArr[1].currency,
+                $scope.newArr[2].currency, $scope.newArr[3].currency];
+
+            $scope.data = [
+                [$scope.weekRateC[0], $scope.weekRateC[1], $scope.weekRateC[2],
+                    $scope.weekRateC[3], $scope.weekRateC[4], $scope.weekRateC[5], $scope.weekRateC[6]],
+                [$scope.weekRateG[0], $scope.weekRateG[1], $scope.weekRateG[2],
+                    $scope.weekRateG[3], $scope.weekRateG[4], $scope.weekRateG[5], $scope.weekRateG[6]],
+                [$scope.weekRateU[0], $scope.weekRateU[1], $scope.weekRateU[2],
+                    $scope.weekRateU[3], $scope.weekRateU[4], $scope.weekRateU[5], $scope.weekRateU[6]],
+                [$scope.weekRateE[0], $scope.weekRateE[1], $scope.weekRateE[2],
+                    $scope.weekRateE[3], $scope.weekRateE[4], $scope.weekRateE[5], $scope.weekRateE[6]]
+            ];
+        }
+    };
+
     $scope.getTodayRate = function () {
         $http({
             method: 'GET',
@@ -103,7 +159,6 @@ var myApp = angular.module('myApp', [
         });
     };
 
-
     $scope.getWeekRate = function () {
         $scope.weekRateC = [];
         $scope.weekRateG = [];
@@ -118,28 +173,34 @@ var myApp = angular.module('myApp', [
                     }).then(function successCallback(response) {
                         $scope.users.push(response.data);
                         $scope.getCurrency();
-                        $scope.weekRateC.push($scope.newArr[0].saleRateNB);
-                        $scope.weekRateG.push($scope.newArr[1].saleRateNB);
-                        $scope.weekRateU.push($scope.newArr[2].saleRateNB);
-                        $scope.weekRateE.push($scope.newArr[3].saleRateNB);
+                        if ($scope.cbMod.val1 && $scope.cbMod.val2
+                            && $scope.cbMod.val3 && $scope.cbMod.val4) {
+                            $scope.selectWeekCur(0, 1, 2, 3);
+                        }
+                        else if ($scope.cbMod.val1 === true && $scope.cbMod.val2 === true
+                            && $scope.cbMod.val3 === true) {
+                            $scope.selectWeekCur(0, 1, 2);
+                        }
+                        else if ($scope.cbMod.val1 === true && $scope.cbMod.val2 === true) {
+                            $scope.selectWeekCur(0, 1);
+                        }
+                        else if ($scope.cbMod.val1) {
+                            $scope.selectWeekCur(0);
+                        }
+                        else if ($scope.cbMod.val2) {
+                            $scope.selectWeekCur(1);
+                        }
+                        else if ($scope.cbMod.val3) {
+                            $scope.selectWeekCur(2);
+                        }
+                        else if ($scope.cbMod.val4) {
+                            $scope.selectWeekCur(3);
+                        }
 
-                        $scope.series = [$scope.newArr[0].currency, $scope.newArr[1].currency,
-                            $scope.newArr[2].currency, $scope.newArr[3].currency];
-
-                        $scope.data = [
-                            [$scope.weekRateC[0], $scope.weekRateC[1], $scope.weekRateC[2],
-                             $scope.weekRateC[3], $scope.weekRateC[4], $scope.weekRateC[5], $scope.weekRateC[6]],
-                            [$scope.weekRateG[0], $scope.weekRateG[1], $scope.weekRateG[2],
-                             $scope.weekRateG[3], $scope.weekRateG[4], $scope.weekRateG[5], $scope.weekRateG[6]],
-                            [$scope.weekRateU[0], $scope.weekRateU[1], $scope.weekRateU[2],
-                                $scope.weekRateU[3], $scope.weekRateU[4], $scope.weekRateU[5], $scope.weekRateU[6]],
-                            [$scope.weekRateE[0], $scope.weekRateE[1], $scope.weekRateE[2],
-                                $scope.weekRateE[3], $scope.weekRateE[4], $scope.weekRateE[5], $scope.weekRateE[6]]
-                        ];
                     }, function errorCallback(response) {
                         console.log('error' + response.statusText);
                     });
-            }, 1100);
+            }, 2000);
         };
         for (var y = 5; y < 11; y++){
             $scope.getWeekData(y);
