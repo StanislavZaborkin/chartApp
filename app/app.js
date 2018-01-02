@@ -209,7 +209,45 @@ var myApp = angular.module('myApp', [
     };
 
     $scope.getMonthRate = function () {
+        $scope.monthRateC = [];
+        $scope.monthRateG = [];
+        $scope.monthRateU = [];
+        $scope.monthRateE = [];
+        $scope.getMonthData = function(m) {
+            setTimeout(function(){
+                $scope.urla = 'https://api.privatbank.ua/p24api/exchange_rates?json&date=' + m + '.11.2017';
+                $http({
+                    method: 'GET',
+                    url: $scope.urla
+                }).then(function successCallback(response) {
+                    $scope.users.push(response.data);
+                    $scope.getCurrency();
+                    $scope.monthRateC.push($scope.newArr[0].saleRateNB);
+                    $scope.series = [$scope.newArr[0].currency];
+                    $scope.data = [
+                        [$scope.monthRateC[0], $scope.monthRateC[1], $scope.monthRateC[2],
+                            $scope.monthRateC[3], $scope.monthRateC[4], $scope.monthRateC[5], $scope.monthRateC[6],
+                            $scope.monthRateC[7], $scope.monthRateC[8], $scope.monthRateC[9], $scope.monthRateC[10],
+                            $scope.monthRateC[11], $scope.monthRateC[12], $scope.monthRateC[13], $scope.monthRateC[14],
+                            $scope.monthRateC[15], $scope.monthRateC[16], $scope.monthRateC[17], $scope.monthRateC[18],
+                            $scope.monthRateC[19], $scope.monthRateC[20], $scope.monthRateC[21], $scope.monthRateC[22],
+                            $scope.monthRateC[23], $scope.monthRateC[24], $scope.monthRateC[25], $scope.monthRateC[26],
+                            $scope.monthRateC[27], $scope.monthRateC[28], $scope.monthRateC[29]]
+                    ];
+                }, function errorCallback(response) {
+                    console.log('error' + response.statusText);
+                });
+            }, 1000);
+        };
+        var m = 0;
 
+        while (m < 30) {
+            $scope.getMonthData(m);
+            m++;
+        }
+        $scope.labels = ["1", "2", "3", "4", "5", "6", "7", "8", "9","10","11",
+        "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22","23",
+            "24", "25", "26", "27", "28", "29", "30"];
     };
 
     $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
