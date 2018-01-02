@@ -9,11 +9,11 @@ var myApp = angular.module('myApp', [
     $scope.users = [];
     $scope.filterArr = [];
 
-    $scope.checkboxModel = {
-        value1 : false,
-        value2 : false,
-        value3 : false,
-        value4 : false
+    $scope.cbMod = {
+        val1 : false,
+        val2 : false,
+        val3 : false,
+        val4 : false
     };
 
     $scope.getCurrency = function () {
@@ -28,6 +28,7 @@ var myApp = angular.module('myApp', [
                 $scope.newArr.push(clone[i]);
             }
         }
+
     };
 
     $scope.selectCur = function (i, j, x, y) {
@@ -73,27 +74,27 @@ var myApp = angular.module('myApp', [
             $scope.users.push(response.data);
             $scope.getCurrency();
 
-            if ($scope.checkboxModel.value1 && $scope.checkboxModel.value2
-                && $scope.checkboxModel.value3 && $scope.checkboxModel.value4) {
+            if ($scope.cbMod.val1 && $scope.cbMod.val2
+                && $scope.cbMod.val3 && $scope.cbMod.val4) {
                 $scope.selectCur(0, 1, 2, 3);
             }
-            else if ($scope.checkboxModel.value1 === true && $scope.checkboxModel.value2 === true
-                && $scope.checkboxModel.value3 === true) {
+            else if ($scope.cbMod.val1 === true && $scope.cbMod.val2 === true
+                && $scope.cbMod.val3 === true) {
                 $scope.selectCur(0, 1, 2);
             }
-            else if ($scope.checkboxModel.value1 === true && $scope.checkboxModel.value2 === true) {
+            else if ($scope.cbMod.vall === true && $scope.cbMod.val2 === true) {
                 $scope.selectCur(0, 1);
             }
-            else if ($scope.checkboxModel.value1) {
+            else if ($scope.cbMod.val1) {
                 $scope.selectCur(0);
             }
-            else if ($scope.checkboxModel.value2) {
+            else if ($scope.cbMod.val2) {
                 $scope.selectCur(1);
             }
-            else if ($scope.checkboxModel.value3) {
+            else if ($scope.cbMod.val3) {
                 $scope.selectCur(2);
             }
-            else if ($scope.checkboxModel.value4) {
+            else if ($scope.cbMod.val4) {
                 $scope.selectCur(3);
             }
             $scope.labels = ["Today"];
@@ -102,33 +103,47 @@ var myApp = angular.module('myApp', [
         });
     };
 
+
     $scope.getWeekRate = function () {
-        $scope.weekRate = [];
+        $scope.weekRateC = [];
+        $scope.weekRateG = [];
+        $scope.weekRateU = [];
+        $scope.weekRateE = [];
+        $scope.getWeekData = function(y) {
+            setTimeout(function(){
+                    $scope.urla = 'https://api.privatbank.ua/p24api/exchange_rates?json&date=' + y + '.12.2017';
+                    $http({
+                        method: 'GET',
+                        url: $scope.urla
+                    }).then(function successCallback(response) {
+                        $scope.users.push(response.data);
+                        $scope.getCurrency();
+                        $scope.weekRateC.push($scope.newArr[0].saleRateNB);
+                        $scope.weekRateG.push($scope.newArr[1].saleRateNB);
+                        $scope.weekRateU.push($scope.newArr[2].saleRateNB);
+                        $scope.weekRateE.push($scope.newArr[3].saleRateNB);
 
-            $scope.getData = function () {
-                var urla = 'https://api.privatbank.ua/p24api/exchange_rates?json&date=' + $scope.i + '.12.2017';
-                $http({
-                    method: 'GET',
-                    url: urla
-                }).then(function successCallback(response) {
-                    $scope.users.push(response.data);
-                    $scope.getCurrency();
-                    $scope.weekRate.push($scope.newArr[0].saleRateNB);
-                    console.log($scope.weekRate);
-                }, function errorCallback(response) {
-                    console.log('error' + response.statusText);
-                });
-            };
-        for ($scope.i = 21; $scope.i < 15; $scope.i++){
-            setTimeout($scope.getData, 1000);
+                        $scope.series = [$scope.newArr[0].currency, $scope.newArr[1].currency,
+                            $scope.newArr[2].currency, $scope.newArr[3].currency];
+
+                        $scope.data = [
+                            [$scope.weekRateC[0], $scope.weekRateC[1], $scope.weekRateC[2],
+                             $scope.weekRateC[3], $scope.weekRateC[4], $scope.weekRateC[5], $scope.weekRateC[6]],
+                            [$scope.weekRateG[0], $scope.weekRateG[1], $scope.weekRateG[2],
+                             $scope.weekRateG[3], $scope.weekRateG[4], $scope.weekRateG[5], $scope.weekRateG[6]],
+                            [$scope.weekRateU[0], $scope.weekRateU[1], $scope.weekRateU[2],
+                                $scope.weekRateU[3], $scope.weekRateU[4], $scope.weekRateU[5], $scope.weekRateU[6]],
+                            [$scope.weekRateE[0], $scope.weekRateE[1], $scope.weekRateE[2],
+                                $scope.weekRateE[3], $scope.weekRateE[4], $scope.weekRateE[5], $scope.weekRateE[6]]
+                        ];
+                    }, function errorCallback(response) {
+                        console.log('error' + response.statusText);
+                    });
+            }, 1100);
+        };
+        for (var y = 5; y < 11; y++){
+            $scope.getWeekData(y);
         }
-
-
-        /*$scope.getCurrency();
-        $scope.series = [$scope.newArr[0].currency];
-        $scope.data = [
-            [$scope.weekRate]
-        ];*/
         $scope.labels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     };
 
