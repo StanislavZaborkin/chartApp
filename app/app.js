@@ -119,6 +119,7 @@ var myApp = angular.module('myApp', [
                 [$scope.weekRateE[0], $scope.weekRateE[1], $scope.weekRateE[2],
                     $scope.weekRateE[3], $scope.weekRateE[4], $scope.weekRateE[5], $scope.weekRateE[6]]
             ];
+            console.log($scope.data);
         }
     };
 
@@ -215,6 +216,7 @@ var myApp = angular.module('myApp', [
         $scope.monthRateE = [];
         $scope.getMonthData = function(m) {
             setTimeout(function(){
+                clearInterval(timerId);
                 $scope.urla = 'https://api.privatbank.ua/p24api/exchange_rates?json&date=' + m + '.11.2017';
                 $http({
                     method: 'GET',
@@ -234,17 +236,20 @@ var myApp = angular.module('myApp', [
                             $scope.monthRateC[23], $scope.monthRateC[24], $scope.monthRateC[25], $scope.monthRateC[26],
                             $scope.monthRateC[27], $scope.monthRateC[28], $scope.monthRateC[29]]
                     ];
+                    console.log($scope.data);
                 }, function errorCallback(response) {
                     console.log('error' + response.statusText);
                 });
-            }, 1000);
+            }, 120000);
         };
-        var m = 0;
-
-        while (m < 30) {
+        var m = 1;
+        var timerId = setInterval(function() {
             $scope.getMonthData(m);
             m++;
-        }
+        }, 4000);
+        /*for (var m = 1; m < 30;m++){
+            $scope.getMonthData(m);
+        }*/
         $scope.labels = ["1", "2", "3", "4", "5", "6", "7", "8", "9","10","11",
         "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22","23",
             "24", "25", "26", "27", "28", "29", "30"];

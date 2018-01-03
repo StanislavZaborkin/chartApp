@@ -13,8 +13,11 @@
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" href="app.css">
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+    <link rel="stylesheet" href="bower_components/preloader.css3/dist/preloader.css">
+    <script src="bower_components/preloader.css3/dist/preloader.js"></script>
 </head>
 <body>
+<script>preloaderCSS3("Loading application... Please wait");</script>
   <div ng-controller="myController">
 
       <label>CAD
@@ -35,10 +38,11 @@
             chart-dataset-override="datasetOverride" chart-click="onClick">
     </canvas>
 
+
         <span>
         <button class="button" ng-click="getTodayRate()">Today</button>
         </span><span>
-        <button class="button" ng-click="getWeekRate()">Last week</button>
+        <button class="button" ng-click="getWeekRate()" ng-cloak>Last week</button>
         </span><span>
         <button class="button" ng-click="getMonthRate()">Last month</button>
         </span>
